@@ -2,9 +2,10 @@ const express = require("express");
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const dotenv = require("dotenv");
-const getTask = require("./routes/task.route");
+const tasks = require("./routes/task.route");
 const dbConnection = require("./database/DataBase");
 const rateHandle = require("./middleware/rate.handle");
+const errorMsg = require("./middleware/404");
 dotenv.config({ path: "./config.env" });
 
 const app = express();
@@ -18,7 +19,8 @@ app.use(bodyParser.urlencoded({ extended: "false" }));
 app.use(rateHandle);
 
 // Routes
-app.use("/api/v1/task", getTask);
+app.use("/api/v1/tasks", tasks);
+app.use(errorMsg);
 
 // Root
 app.get("/", (req, res) => {
